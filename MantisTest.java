@@ -60,11 +60,13 @@ public class MantisTest {
         Response responseUpdateName = given()
                 .contentType("application/x-www-form-urlencoded")
                 .cookies(cookies)
-                .body("real_name" + RealName + "password_current=&password=&password_confirm=&email=rov55an3014%40mail.ru&realname=admin3")
+                .body("real_name" + RealName + "password_current=&password=&password_confirm=&email=rov55an3014%40mail.ru&realname=admin3timestamp")
                 .when()
                 .post("https://academ-it.ru/mantisbt/account_update.php")
                 .andReturn();
         responseUpdateName.prettyPrint();
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        String expectedRealName = "date" + timestamp;
         assertNotEquals("Realname", "Nuw Real Name");
         assertTrue(responseUpdateName.body().asString().contains("Real name successfully updated"));
 
@@ -72,7 +74,7 @@ public class MantisTest {
                 .cookies(cookies)
                 .get("https://academ-it.ru/mantisbt/account_page.php")
                 .andReturn();
-        JsonPath.from("Real Name = admin3");
+        JsonPath.from("Real Name = admin3timestamp");
 
     }
 }
